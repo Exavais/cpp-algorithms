@@ -1,21 +1,27 @@
 #pragma once
 
 #include <cstddef>
+#include <functional>
 #include <vector>
 #include <utility>
 
 namespace algo {
 
-template <typename T>
-class MinHeap {
+template <typename T, typename Compare = std::less<T>>
+class Heap {
 private:
     std::vector<T> data;
+    Compare comp;
+
+    bool higher_priority(const T& a, const T& b) const {
+        return comp(a, b);
+    }
 
     void sift_up(std::size_t index) {
         while (index > 0) {
             std::size_t parent = (index - 1) / 2;
 
-            if (data[parent] <= data[index]) {
+            if (!higher_priority(data[index], data[parent])) {
                 break;
             }
 
@@ -28,22 +34,22 @@ private:
         while (true) {
             std::size_t left = 2 * index + 1;
             std::size_t right = 2 * index + 2;
-            std::size_t smallest = index;
+            std::size_t best = index;
 
-            if (left < data.size() && data[left] < data[smallest]) {
-                smallest = left;
+            if (left < data.size() && higher_priority(data[left], data[best])) {
+                best = left;
             }
 
-            if (right < data.size() && data[right] < data[smallest]) {
-                smallest = right;
+            if (right < data.size() && higher_priority(data[right], data[best])) {
+                best = right;
             }
 
-            if (smallest == index) {
+            if (best == index) {
                 break;
             }
 
-            std::swap(data[index], data[smallest]);
-            index = smallest;
+            std::swap(data[index], data[best]);
+            index = best;
         }
     }
 
@@ -73,5 +79,11 @@ public:
         }
     }
 };
+
+template <typename T>
+using MinHeap = Heap<T, std::less<T>>;
+
+template <typename T>
+using MaxHeap = Heap<T, std::greater<T>>;
 
 } // namespace algo
