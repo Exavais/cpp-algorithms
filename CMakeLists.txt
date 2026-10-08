@@ -10,7 +10,16 @@ add_executable(test_sort
     tests/test_sort.cpp
 )
 
+add_executable(test_search
+    tests/test_search.cpp
+)
+
 target_include_directories(test_sort
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+)
+
+target_include_directories(test_search
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
 )
