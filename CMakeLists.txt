@@ -14,12 +14,21 @@ add_executable(test_search
     tests/test_search.cpp
 )
 
+add_executable(test_heap
+    tests/test_heap.cpp
+)
+
 target_include_directories(test_sort
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
 )
 
 target_include_directories(test_search
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+)
+
+target_include_directories(test_heap
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
 )
